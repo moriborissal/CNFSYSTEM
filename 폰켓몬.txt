@@ -1,0 +1,41 @@
+import java.util.*;
+class Solution {
+    public int solution(int[] nums) {
+        
+        /*
+            n마리 포켓몬이 있는데 (짝수)
+            n/2개를 가져가도 된다고 함.
+            
+            그럼
+            nums에 있는 포켓몬의 종과 (겹치면 1로 침)
+            n/2를 비교해서
+            n/2가 포켓몬의 종보다 많다면 종의 수만큼 선택
+            
+            n/2가 포켓몬의 종보다 적다면 n/2를 입력
+        */
+        
+        
+        int answer = 0;
+        int chk = nums.length / 2;      // n/2 계산
+        List<String> pokemon = new ArrayList<>();  // list, ArrayList 사용
+
+        // 포켓몬의 종이 얼마나 있는지 체크
+        for (int i=0; i<nums.length; i++) {
+            String chkPokemon = Integer.toString(nums[i]);
+            
+            if (!pokemon.contains(chkPokemon)) {   // 포함여부 확인 (없으면 추가)
+                pokemon.add(chkPokemon);
+            }
+        }
+
+        
+        // n/2가 포켓몬의 종보다 많다면 종의 수만큼 선택
+        if(chk > pokemon.size()) {
+            answer = pokemon.size();
+        } else {
+           answer = chk;
+        }
+
+        return answer ;
+    }
+}
