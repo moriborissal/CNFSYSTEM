@@ -1,0 +1,57 @@
+class Solution {
+    public int solution(String dartResult) {
+        int answer = 0;
+        
+        char[] dart = dartResult.toCharArray(); // 문자 배열로 변환
+        int[] score = new int[3];
+        int temp = 0;
+
+        for (int i = 0; i < dart.length; i++) {
+            if (Character.isDigit(dart[i])) {       // Character.isDigit() 메소드 사용해서 숫자인지 체크
+                
+                // 숫자를 뽑았는데 문자형으로 되어있어서 숫자형으로 반환해줘야 함.
+                
+                // 첫번째 방식 : getNumericValue() 메소드 사용
+                score[temp] =  Character.getNumericValue(dart[i]);
+                
+                // 두번째 방식 : 아스키코드 계산
+                //             문자형 숫자의 숫자를 뽑을 때는 문자형 숫자 '0'의 값만큼 빼주면 된다.
+                //             ex) 문자 '1'의 아스키코드 = '61'
+                //                 문자 '0'의 아스키코드 = '60'
+                //                 61 - 60 = 1
+                // score[temp] = dart[i] - '0';
+
+                // 10점 계산
+                if (i + 1 < dart.length && Character.isDigit(dart[i + 1])) {
+                    score[temp] = score[temp] * 10; // (1 x 10)
+                    i++;
+                }
+                temp++;
+            } else {    // 숫자가 아닐 때 보너스, 옵션 계산
+                int currentScore = score[temp - 1]; // 위에서 숫자일 때 temp++ 했기 때문에 -1 해줘야 함.
+                switch (dart[i]) {
+                    case 'D':   // 2제곱
+                        score[temp - 1] = currentScore * currentScore;
+                        break;
+                    case 'T':   // 3제곱
+                        score[temp - 1] = currentScore * currentScore * currentScore;
+                        break;
+                    case '*':   // 현재, 이전 점수 2배
+                        score[temp - 1] = currentScore * 2; // 해당 점수 2배
+                        if (temp - 2 >= 0)  // 전에 얻은 점수
+                            score[temp - 2] = score[temp - 2] * 2;
+                        break;
+                    case '#':   // 해당 점수 마이너스 처리
+                        score[temp - 1] = -currentScore;
+                        break;
+                }
+            }
+        }
+
+        for (int s : score) {
+            answer += s;
+        }
+
+        return answer;
+    }
+}
